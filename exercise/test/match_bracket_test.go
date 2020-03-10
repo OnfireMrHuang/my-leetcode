@@ -7,7 +7,7 @@ import (
 
 func TestMatchBrackets(t *testing.T)  {
 	
-	ok := function.BracketIsValid("[]{}()")
+	ok := function.BracketIsValid("[][{fsgsg}(sfs)")
 	if !ok {
 		t.Fatal("test fail")
 	} 
