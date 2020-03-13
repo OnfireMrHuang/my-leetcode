@@ -74,7 +74,7 @@ func maxSlidingWindow(nums []int, k int) []int {
 		if q.Len() >= k {
 			q.Dequeue()
 		}
-		if nums[i] > q.Peek().(int) {
+		if q.Peek() != nil && nums[i] > q.Peek().(int) {
 			for q.Len() > 0 {
 				q.Dequeue()
 			}
