@@ -70,26 +70,25 @@ func maxSlidingWindow(nums []int, k int) []int {
 	q.Enqueue(nums[0])
 	list[index] = nums[0]
 	for i := 1; i < len(nums); i++ {
+
+		if q.Len() >= k {
+			q.Dequeue()
+		}
 		if nums[i] > q.Peek().(int) {
 			for q.Len() > 0 {
 				q.Dequeue()
 			}
 		}
 		q.Enqueue(nums[i])	
-		if q.Len() > k {
-			q.Dequeue()
+		if i-k < 0 {
+			index = 0
+		} else {
+			index = i-k+1
 		}
-
 		list[index] = q.Peek().(int)
-		if i >= k-1 {
-			index++
-		}
-	}
-	if index < 1 {
-		index = 1
 	}
 
-	return list[0:index]
+	return list[0:index+1]
 }
 // @lc code=end
 

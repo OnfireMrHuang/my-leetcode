@@ -7,7 +7,7 @@ import (
 
 func TestSlidingWindow(t *testing.T)  {
 
-	arr := []int{1,3,2,4,7}
+	arr := []int{1,-1,3,4}
 	l := function.MaxSlidingWindow(arr,3)
 	t.Log(l)
 }
