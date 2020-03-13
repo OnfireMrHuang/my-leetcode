@@ -1,4 +1,10 @@
-package kethlargest
+/*
+ * @lc app=leetcode.cn id=703 lang=golang
+ *
+ * [703] 数据流中的第K大元素
+ */
+
+// @lc code=start
 
 import (
 	"container/heap"
@@ -53,4 +59,11 @@ func (this *KthLargest) Add(val int) int {
 	}
 	return this.Q[0]
 }
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * obj := Constructor(k, nums);
+ * param_1 := obj.Add(val);
+ */
+// @lc code=end
 
