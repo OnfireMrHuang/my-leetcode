@@ -4,51 +4,77 @@
  * [51] N皇后
  */
 
-// @lc code=start
-// 解法思路使用DFS
-func solveNQueens(n int) [][]string {
-	col,dia1,dia2,row,res := make([]bool,n),make([]bool,2*n-1),make([]bool,2*n-1),[]int{},[][]string{}
-	putQueen(n,0,&col,&dia1,&dia2,&row,&res)
-	return res
-}
-
-func putQueen(n,index int,col,dia1,dia2 *[]bool,row *[]int,res *[][]string) {
-	if index == n {
-		*res = append(*res,generateBoard(n,row))
-		return
-	}
-	for i:=0;i<n;i++ {
-		if !(*col)[i] && !(*dia1)[index+i] && !(*dia2)[index-i+n-1] {
-			*row = append(*row,i)
-			(*col)[i] = true
-			(*dia1)[index+i] = true
-			(*dia2)[index-i+n-1] = true
-			putQueen(n,index+1,col,dia1,dia2,row,res)
-			(*col)[i]=false
-			(*dia1)[index+i]=false
-			(*dia2)[index-i+n-1]=false
-			*row = (*row)[:len(*row)-1]
+ func solveNQueens(n int) [][]string {
+	var result [][]string
+	board := make([][]rune,n)
+	for i:=0; i < n; i++ {
+		board[i] = make([]rune,n)
+		for j:=0; j < n; j++ {
+			board[i][j] = '.'
 		}
 	}
+	backTrace(board, 0, &result)
+	return result
 }
 
-func generateBoard(n int,row *[]int) []string {
-	board := []string{}
-	res := ""
-	// 构造一块棋盘
-	for i:=0; i< n;i++ {
-		res +=  "."
+func backTrace(board [][]rune, row int, result *[][]string) {
+
+	n := len(board)
+	if row == n {
+		temp := make([]string,n)
+		for i:=0; i < n; i++ {
+			for j:=0; j < n; j++ {
+				temp[i] += string(board[i][j])
+			}
+		}
+		*result = append(*result, temp)
+		return
 	}
-	for i:=0;i<n;i++ {
-		board = append(board,res)
+	for col := 0; col < n; col++ {
+		if !isValid(board, row, col) {
+			//fmt.Println("校验不通过")
+			continue
+		}
+		board[row][col] = 'Q'
+		backTrace(board, row+1, result)
+		board[row][col] = '.'
 	}
-	// 填充棋盘
-	for i:=0;i<n;i++ {
-		tmp := []byte(board[i])
-		tmp[(*row)[i]] = 'Q'
-		board[i] = string(tmp)
-	}
-	return board
 }
+
+func isValid(board [][]rune, row int, col int) bool {
+
+	// 这里的行和列表示棋子的坐标
+	n := len(board) // 棋盘大小
+
+	// 检查正上方是否有Q
+	for i := 0; i < row; i++ {
+		if board[i][col] == 'Q' {
+			return false
+		}
+	}
+
+	// 检查右上方有没有皇后
+	for i, j := row-1, col+1; i >= 0 && j < n; i, j = i-1, j+1 {
+		if board[i][j] == 'Q' {
+			return false
+		}
+	}
+
+	// 检查左上方有没有皇后
+	for i, j := row-1, col-1; i >= 0 && j >= 0; i, j = i-1, j-1 {
+		if board[i][j] == 'Q' {
+			return false
+		}
+	}
+
+	//// 检查左边有没有Q字符
+	//for j:=0; j < col; j=j+1 {
+	//	if board[row][j] == 'Q' {
+	//		return false
+	//	}
+	//}
+	return true
+}
+
 // @lc code=end
 
